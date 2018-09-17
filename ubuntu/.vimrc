@@ -154,6 +154,9 @@ autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 nnoremap j gj
 nnoremap k gk
 
+" copy and paste from desktop clipboard
+set clipboard=unnamedplus
+
 let mapleader=" "
 nnoremap <Leader>E :NERDTreeToggle<CR>
 nnoremap th  :tabfirst<CR>
