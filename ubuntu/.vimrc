@@ -53,6 +53,7 @@ call plug#begin ('~/.vim/plugged')
   Plug 'wincent/terminus'
   Plug 'christoomey/vim-tmux-navigator'
   Plug '/usr/local/opt/fzf'
+  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
   Plug 'junegunn/fzf.vim'
   Plug 'easymotion/vim-easymotion'
   Plug 'tpope/vim-sleuth'
@@ -70,6 +71,7 @@ call plug#begin ('~/.vim/plugged')
   Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
   Plug 'tpope/vim-commentary'
   Plug 'jiangmiao/auto-pairs'
+  Plug 'valloric/youcompleteme'
   Plug 'sheerun/vim-polyglot'
   Plug 'mattn/emmet-vim'
   Plug 'tpope/vim-repeat'
@@ -103,6 +105,16 @@ let g:airline#extensions#tabline#formatter = "default"
 let g:airline_powerline_fonts = 1
 let g:airline_solarized_bg="dark"
 let g:airline_theme="base16_grayscale"
+
+" YCM settings
+" Start autocompletion after 4 chars
+let g:ycm_min_num_of_chars_for_completion = 4
+let g:ycm_min_num_identifier_candidate_chars = 4
+let g:ycm_enable_diagnostic_highlighting = 0
+
+" Don't show YCM's preview window
+set completeopt-=preview
+let g:ycm_add_preview_to_completeopt = 0
 
 " fzf settings
 set rtp+=/usr/local/opt/fzf
