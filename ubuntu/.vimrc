@@ -25,6 +25,7 @@ set splitbelow
 set splitright
 
 set backup
+set backupcopy=yes
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set backupskip=/tmp/*,/private/tmp/*
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
@@ -110,7 +111,7 @@ let g:airline_theme="base16_grayscale"
 " vim-closetag settings
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.jsx'
 let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
-let g:closetag_filetypes = 'html,xhtml,phtml'
+let g:closetag_filetypes = 'html,xhtml,phtml,jsx'
 let g:closetag_xhtml_filetypes = 'xhtml,jsx'
 let g:closetag_emptyTags_caseSensitive = 1
 
