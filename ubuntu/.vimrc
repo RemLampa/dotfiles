@@ -71,6 +71,7 @@ call plug#begin ('~/.vim/plugged')
   Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
   Plug 'tpope/vim-commentary'
   Plug 'jiangmiao/auto-pairs'
+  Plug 'alvan/vim-closetag'
   Plug 'valloric/youcompleteme'
   Plug 'sheerun/vim-polyglot'
   Plug 'mattn/emmet-vim'
@@ -105,6 +106,13 @@ let g:airline#extensions#tabline#formatter = "default"
 let g:airline_powerline_fonts = 1
 let g:airline_solarized_bg="dark"
 let g:airline_theme="base16_grayscale"
+
+" vim-closetag settings
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.jsx'
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
+let g:closetag_filetypes = 'html,xhtml,phtml'
+let g:closetag_xhtml_filetypes = 'xhtml,jsx'
+let g:closetag_emptyTags_caseSensitive = 1
 
 " YCM settings
 " Start autocompletion after 4 chars
@@ -180,7 +188,7 @@ nnoremap tt  :tabedit<Space>
 nnoremap tn  :tabnext<Space>
 nnoremap tm  :tabm<Space>
 nnoremap td  :tabclose<CR>
-nnoremap <c-p> :GFiles<Space>
+nnoremap <c-p> :FZF<CR>
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
