@@ -1,5 +1,21 @@
 set -o vi
 
+export LDFLAGS="-L/usr/local/opt/zlib/lib"
+export CPPFLAGS="-I/usr/local/opt/zlib/include"
+
+# don't duplicate lines in history
+HISTCONTROL=ignoreboth
+
+# append to history file, don't overwrite
+shopt -s histappend
+
+# history size
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# update lines and columns accdg to window size
+shopt -s checkwinsize
+
 export PATH="/usr/local/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="$PATH:~/bin"
@@ -26,6 +42,13 @@ if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
 fi
 
+# fd as default source for fzf
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
 alias ls='ls -FG'
 
 alias brew='env PATH=${PATH//$(pyenv root)\/shims:/} brew'
@@ -54,6 +77,7 @@ alias gco="hub checkout"
 alias gd="hub diff"
 alias grst="hub reset"
 alias gl="git log --oneline --graph --color --decorate"
+alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
 
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 

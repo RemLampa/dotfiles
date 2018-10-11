@@ -25,6 +25,7 @@ set splitbelow
 set splitright
 
 set backup
+set backupcopy=yes
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set backupskip=/tmp/*,/private/tmp/*
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
@@ -69,7 +70,9 @@ call plug#begin ('~/.vim/plugged')
   Plug 'xuyuanp/nerdtree-git-plugin'
   Plug 'powerline/powerline'
   Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+  Plug 'valloric/youcompleteme'
   Plug 'tpope/vim-commentary'
+  Plug 'alvan/vim-closetag'
   Plug 'jiangmiao/auto-pairs'
   Plug 'sheerun/vim-polyglot'
   Plug 'mattn/emmet-vim'
@@ -97,6 +100,23 @@ endif
 
 " close vim if only nerdtree is open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" YCM settings
+" Start autocompletion after 4 chars
+let g:ycm_min_num_of_chars_for_completion = 4
+let g:ycm_min_num_identifier_candidate_chars = 4
+let g:ycm_enable_diagnostic_highlighting = 0
+
+" Don't show YCM's preview window
+set completeopt-=preview
+let g:ycm_add_preview_to_completeopt = 0
+
+" vim-closetag settings
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.jsx'
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
+let g:closetag_filetypes = 'html,xhtml,phtml,jsx'
+let g:closetag_xhtml_filetypes = 'xhtml,jsx'
+let g:closetag_emptyTags_caseSensitive = 1
 
 " airline settings
 let g:airline#extensions#tabline#enabled = 1
@@ -165,7 +185,7 @@ nnoremap tt  :tabedit<Space>
 nnoremap tn  :tabnext<Space>
 nnoremap tm  :tabm<Space>
 nnoremap td  :tabclose<CR>
-nnoremap <c-p> :GFiles<Space>
+nnoremap <c-p> :FZF<CR>
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
