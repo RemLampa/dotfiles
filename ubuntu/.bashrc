@@ -1,7 +1,8 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
-export PATH=$PATH:~/.linuxbrew/bin
+
+export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
 
 # If not running interactively, don't do anything
 case $- in
@@ -93,6 +94,9 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+# enable vim mode
+set -o vi
+
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
@@ -108,6 +112,10 @@ alias l='ls -CF'
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# Switch between cpu performance and power saving
+alias cpuboost='echo performance | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor'
+alias cpusave='echo powersave | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -135,4 +143,9 @@ export PATH="~/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+[[ -s "/home/remlampa/.gvm/scripts/gvm" ]] && source "/home/remlampa/.gvm/scripts/gvm"

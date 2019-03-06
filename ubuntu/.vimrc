@@ -70,6 +70,7 @@ call plug#begin ('~/.vim/plugged')
   Plug 'xuyuanp/nerdtree-git-plugin'
   Plug 'powerline/powerline'
   Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+  Plug 'ekalinin/dockerfile.vim'
   Plug 'tpope/vim-commentary'
   Plug 'jiangmiao/auto-pairs'
   Plug 'alvan/vim-closetag'
@@ -94,12 +95,16 @@ call plug#begin ('~/.vim/plugged')
 call plug#end()
 
 if &diff
-  colorscheme gruvbox 
+  colorscheme gruvbox
   " colorscheme darcula
 endif
 
 " close vim if only nerdtree is open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" nerdtree settings
+let NERDTreeShowLineNumbers = 1
+autocmd FileType nerdtree setlocal relativenumber
 
 " airline settings
 let g:airline#extensions#tabline#enabled = 1
@@ -109,10 +114,10 @@ let g:airline_solarized_bg="dark"
 let g:airline_theme="base16_grayscale"
 
 " vim-closetag settings
-let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.jsx'
-let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
-let g:closetag_filetypes = 'html,xhtml,phtml,jsx'
-let g:closetag_xhtml_filetypes = 'xhtml,jsx'
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.jsx,*.js,*.ts,*.tsx'
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx,*.js,*.ts,*.tsx'
+let g:closetag_filetypes = 'html,xhtml,phtml,jsx,js,ts,tsx'
+let g:closetag_xhtml_filetypes = 'xhtml,jsx,js,ts,tsx'
 let g:closetag_emptyTags_caseSensitive = 1
 
 " YCM settings
@@ -129,11 +134,22 @@ let g:ycm_add_preview_to_completeopt = 0
 set rtp+=/usr/local/opt/fzf
 
 " lint fixing
+" let g:ale_linters = {
+" \  "javascript": ["eslint"],
+" \}
 let g:ale_fixers = {
+\   "*": ["remove_trailing_lines", "trim_whitespace"],
 \   "javascript": ["eslint"],
+\   "graphql": ["eslint"],
 \   "go": ["gofmt"],
+\   "css": ["prettier"],
 \   "typescript": ["eslint"],
+\   "markdown": ["prettier"],
 \}
+" let g:ale_javascript_eslint_executable = "eslint_d"
+" let g:ale_javascript_eslint_use_global = 1
+" let g:ale_javascript_prettier_eslint_executable = "prettier_eslint"
+" let g:ale_javascript_prettier_eslint_use_global = 1
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_save = 1
 let g:ale_lint_on_text_changed = 0
