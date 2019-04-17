@@ -10,6 +10,11 @@ case $- in
       *) return;;
 esac
 
+# Connect to SSH agent
+# eval "$(ssh-agent -s)"
+/usr/bin/keychain $HOME/.ssh/id_rsa
+source $HOME/.keychain/$HOSTNAME-sh
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -43,6 +48,7 @@ case "$TERM" in
 esac
 
 export TERM=xterm-256color
+alias tmux='tmux -2'
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
@@ -137,7 +143,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
 
 export PATH="~/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
@@ -149,3 +154,8 @@ eval "$(rbenv init -)"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 [[ -s "/home/remlampa/.gvm/scripts/gvm" ]] && source "/home/remlampa/.gvm/scripts/gvm"
+
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).

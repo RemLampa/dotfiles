@@ -1,4 +1,5 @@
-syntax enable
+syntax on
+set syn=auto
 set nocompatible
 set background=dark
 " colorscheme darcula
@@ -23,6 +24,7 @@ set termguicolors
 set encoding=UTF-8
 set splitbelow
 set splitright
+set laststatus=2
 
 set backup
 set backupcopy=yes
@@ -31,8 +33,15 @@ set backupskip=/tmp/*,/private/tmp/*
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set writebackup
 
+filetype on
+filetype indent on
 filetype plugin on
 filetype plugin indent on
+
+" cursor shape
+let &t_SI = "\<Esc>[6 q"
+let &t_SR = "\<Esc>[4 q"
+let &t_EI = "\<Esc>[2 q"
 
 " relative/absolute line number toggling
 set number relativenumber
@@ -53,41 +62,32 @@ call plug#begin ('~/.vim/plugged')
   Plug 'scrooloose/nerdtree'
   Plug 'wincent/terminus'
   Plug 'christoomey/vim-tmux-navigator'
-  Plug '/usr/local/opt/fzf'
-  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
   Plug 'junegunn/fzf.vim'
   Plug 'easymotion/vim-easymotion'
   Plug 'tpope/vim-sleuth'
   Plug 'Xuyuanp/nerdtree-git-plugin'
   Plug 'w0rp/ale'
-  Plug 'scrooloose/syntastic'
+  Plug 'kristijanhusak/vim-carbon-now-sh'
   Plug 'tpope/vim-surround'
   Plug 'altercation/vim-colors-solarized'
-  Plug 'vim-airline/vim-airline'
-  Plug 'vim-airline/vim-airline-themes'
   Plug 'tpope/vim-fugitive'
+  Plug 'itchyny/lightline.vim'
+  Plug 'mengelbrecht/lightline-bufferline'
   Plug 'airblade/vim-gitgutter'
-  Plug 'xuyuanp/nerdtree-git-plugin'
-  Plug 'powerline/powerline'
   Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-  Plug 'ekalinin/dockerfile.vim'
   Plug 'tpope/vim-commentary'
   Plug 'jiangmiao/auto-pairs'
   Plug 'alvan/vim-closetag'
-  Plug 'valloric/youcompleteme'
-  Plug 'sheerun/vim-polyglot'
-  Plug 'mattn/emmet-vim'
   Plug 'tpope/vim-repeat'
-  Plug 'pangloss/vim-javascript'
+  Plug 'jparise/vim-graphql'
+  Plug 'sheerun/vim-polyglot'
+  Plug 'valloric/youcompleteme'
   Plug 'tpope/vim-dispatch'
   Plug 'janko-m/vim-test'
-  Plug 'leafgarland/typescript-vim'
-  Plug 'mxw/vim-jsx'
-  Plug 'elzr/vim-json'
   Plug 'quramy/tsuquyomi'
   " Tabular before vim-markdown
   Plug 'godlygeek/tabular'
-  Plug 'plasticboy/vim-markdown'
   Plug 'nathanaelkane/vim-indent-guides'
   Plug 'tpope/vim-obsession'
   " vim-devicons always at end of plugins
@@ -106,12 +106,39 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let NERDTreeShowLineNumbers = 1
 autocmd FileType nerdtree setlocal relativenumber
 
-" airline settings
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#formatter = "default"
-let g:airline_powerline_fonts = 1
-let g:airline_solarized_bg="dark"
-let g:airline_theme="base16_grayscale"
+" lightline settings
+let g:lightline = {
+  \     'colorscheme': 'wombat',
+  \     'active': {
+  \         'left': [['mode', 'paste' ], ['gitbranch'], ['readonly', 'relativepath', 'modified']],
+  \         'right': [['lineinfo'], ['fileformat', 'fileencoding']]
+  \     },
+  \     'inactive': {
+  \         'left': [['relativepath']],
+  \         'right': [['lineinfo']]
+  \     },
+  \     'component_function': {
+  \       'gitbranch': 'fugitive#head',
+  \       'relativepath': 'LightLineFilename'
+  \     }
+  \ }
+function! LightLineFilename()
+  return expand('%')
+endfunction
+let g:lightline.separator = {
+	\   'left': '', 'right': ''
+  \}
+let g:lightline.subseparator = {
+	\   'left': '', 'right': ''
+  \}
+let g:lightline.tabline = {
+  \   'left': [ ['buffers'] ],
+  \   'right': [ ['close'] ]
+  \ }
+let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
+let g:lightline.component_type   = {'buffers': 'tabsel'}
+set showtabline=2  " Show tabline
+set guioptions-=e  " Don't use GUI tabline
 
 " vim-closetag settings
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.jsx,*.js,*.ts,*.tsx'
@@ -119,6 +146,9 @@ let g:closetag_xhtml_filenames = '*.xhtml,*.jsx,*.js,*.ts,*.tsx'
 let g:closetag_filetypes = 'html,xhtml,phtml,jsx,js,ts,tsx'
 let g:closetag_xhtml_filetypes = 'xhtml,jsx,js,ts,tsx'
 let g:closetag_emptyTags_caseSensitive = 1
+
+" carbon screenshot settings
+vnoremap <F5> :CarbonNowSh<CR>
 
 " YCM settings
 " Start autocompletion after 4 chars
@@ -131,21 +161,32 @@ set completeopt-=preview
 let g:ycm_add_preview_to_completeopt = 0
 
 " fzf settings
-set rtp+=/usr/local/opt/fzf
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
 
 " lint fixing
-" let g:ale_linters = {
-" \  "javascript": ["eslint"],
-" \}
 let g:ale_fixers = {
 \   "*": ["remove_trailing_lines", "trim_whitespace"],
 \   "javascript": ["eslint"],
+\   "json": ["prettier"],
 \   "graphql": ["eslint"],
 \   "go": ["gofmt"],
 \   "css": ["prettier"],
-\   "typescript": ["eslint"],
 \   "markdown": ["prettier"],
 \}
+" \   "typescript": ["eslint"],
 " let g:ale_javascript_eslint_executable = "eslint_d"
 " let g:ale_javascript_eslint_use_global = 1
 " let g:ale_javascript_prettier_eslint_executable = "prettier_eslint"
@@ -160,19 +201,11 @@ let test#strategy = "dispatch"
 " enable indentguides
 let g:indent_guides_enable_on_vim_startup = 1
 
-" synctactic settings
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-set statusline+=%{FugitiveStatusline()}
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-" let g:tsuquyomi_disable_quickfix = 1
-" let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
+" tsuquyomi settings
+let g:tsuquyomi_disable_quickfix = 1
+let g:tsuquyomi_use_local_typescript = 0
 
-" vim-go
+" vim-go settings
 " let g:go_fmt_command = "goimports"
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
