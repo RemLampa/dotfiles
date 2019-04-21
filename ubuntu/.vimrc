@@ -110,7 +110,7 @@ autocmd FileType nerdtree setlocal relativenumber
 let g:lightline = {
   \     'colorscheme': 'wombat',
   \     'active': {
-  \         'left': [['mode', 'paste' ], ['gitbranch'], ['readonly', 'relativepath', 'modified']],
+  \         'left': [['mode', 'paste' ], ['readonly', 'relativepath', 'modified']],
   \         'right': [['lineinfo'], ['fileformat', 'fileencoding']]
   \     },
   \     'inactive': {
@@ -132,7 +132,7 @@ let g:lightline.subseparator = {
 	\   'left': '', 'right': ''
   \}
 let g:lightline.tabline = {
-  \   'left': [ ['buffers'] ],
+  \   'left': [ ['gitbranch'], ['buffers'] ],
   \   'right': [ ['close'] ]
   \ }
 let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
