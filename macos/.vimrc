@@ -23,6 +23,7 @@ set termguicolors
 set encoding=UTF-8
 set splitbelow
 set splitright
+set laststatus=2
 
 set backup
 set backupcopy=yes
@@ -50,22 +51,21 @@ endif
 
 " vim-plug plugins
 call plug#begin ('~/.vim/plugged')
+  Plug 'morhetz/gruvbox'
   Plug 'scrooloose/nerdtree'
   Plug 'wincent/terminus'
   Plug 'christoomey/vim-tmux-navigator'
-  Plug '/usr/local/opt/fzf'
   Plug 'junegunn/fzf.vim'
+  Plug '/usr/local/opt/fzf'
   Plug 'easymotion/vim-easymotion'
-  Plug 'morhetz/gruvbox'
   Plug 'tpope/vim-sleuth'
-  Plug 'Xuyuanp/nerdtree-git-plugin'
   Plug 'w0rp/ale'
-  Plug 'scrooloose/syntastic'
+  Plug 'kristijanhusak/vim-carbon-now-sh'
   Plug 'tpope/vim-surround'
   Plug 'altercation/vim-colors-solarized'
-  Plug 'vim-airline/vim-airline'
-  Plug 'vim-airline/vim-airline-themes'
   Plug 'tpope/vim-fugitive'
+  Plug 'itchyny/lightline.vim'
+  Plug 'mengelbrecht/lightline-bufferline'
   Plug 'airblade/vim-gitgutter'
   Plug 'xuyuanp/nerdtree-git-plugin'
   Plug 'powerline/powerline'
@@ -75,14 +75,10 @@ call plug#begin ('~/.vim/plugged')
   Plug 'alvan/vim-closetag'
   Plug 'jiangmiao/auto-pairs'
   Plug 'sheerun/vim-polyglot'
-  Plug 'mattn/emmet-vim'
+  Plug 'jparise/vim-graphql'
   Plug 'tpope/vim-repeat'
-  Plug 'pangloss/vim-javascript'
   Plug 'tpope/vim-dispatch'
   Plug 'janko-m/vim-test'
-  Plug 'leafgarland/typescript-vim'
-  Plug 'mxw/vim-jsx'
-  Plug 'elzr/vim-json'
   Plug 'quramy/tsuquyomi'
   " Tabular before vim-markdown
   Plug 'godlygeek/tabular'
@@ -118,14 +114,58 @@ let g:closetag_filetypes = 'html,xhtml,phtml,jsx'
 let g:closetag_xhtml_filetypes = 'xhtml,jsx'
 let g:closetag_emptyTags_caseSensitive = 1
 
-" airline settings
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#formatter = "default"
-let g:airline_powerline_fonts = 1
-let g:airline_solarized_bg="dark"
+" carbon screenshot settings
+vnoremap <F5> :CarbonNowSh<CR>
+
+" lightline settings
+let g:lightline = {
+  \     'colorscheme': 'wombat',
+  \     'active': {
+  \         'left': [['mode', 'paste' ], ['gitbranch'], ['readonly', 'relativepath', 'modified']],
+  \         'right': [['lineinfo'], ['fileformat', 'fileencoding']]
+  \     },
+  \     'inactive': {
+  \         'left': [['relativepath']],
+  \         'right': [['lineinfo']]
+  \     },
+  \     'component_function': {
+  \       'gitbranch': 'fugitive#head',
+  \       'relativepath': 'LightLineFilename'
+  \     }
+  \ }
+function! LightLineFilename()
+  return expand('%')
+endfunction
+let g:lightline.separator = {
+	\   'left': '', 'right': ''
+  \}
+let g:lightline.subseparator = {
+	\   'left': '', 'right': ''
+  \}
+let g:lightline.tabline = {
+  \   'left': [ ['buffers'] ],
+  \   'right': [ ['close'] ]
+  \ }
+let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
+let g:lightline.component_type   = {'buffers': 'tabsel'}
+set showtabline=2  " Show tabline
+set guioptions-=e  " Don't use GUI tabline
 
 " fzf settings
-set rtp+=/usr/local/opt/fzf
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+\ 'header': ['fg', 'Comment'] }
 
 " lint fixing
 let g:ale_fixers = {
@@ -142,18 +182,6 @@ let test#strategy = "dispatch"
 
 " enable indentguides
 let g:indent_guides_enable_on_vim_startup = 1
-
-" synctactic settings
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-set statusline+=%{FugitiveStatusline()}
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-" let g:tsuquyomi_disable_quickfix = 1
-" let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
 
 " vim-go
 " let g:go_fmt_command = "goimports"
