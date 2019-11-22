@@ -10,11 +10,6 @@ case $- in
       *) return;;
 esac
 
-# Connect to SSH agent
-# eval "$(ssh-agent -s)"
-/usr/bin/keychain $HOME/.ssh/id_rsa
-source $HOME/.keychain/$HOSTNAME-sh
-
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -48,7 +43,6 @@ case "$TERM" in
 esac
 
 export TERM=xterm-256color
-alias tmux='tmux -2'
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
@@ -88,18 +82,6 @@ xterm*|rxvt*)
     ;;
 esac
 
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls -FG --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-
 # enable vim mode
 set -o vi
 
@@ -110,18 +92,6 @@ set -o vi
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-# Switch between cpu performance and power saving
-alias cpuboost='echo performance | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor'
-alias cpusave='echo powersave | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
