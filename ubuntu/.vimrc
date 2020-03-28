@@ -73,7 +73,6 @@ call plug#begin ('~/.vim/plugged')
   Plug 'mengelbrecht/lightline-bufferline'
   Plug 'airblade/vim-gitgutter'
   Plug 'quramy/tsuquyomi'
-  Plug 'leafgarland/typescript-vim'
   Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
   Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
   Plug 'tpope/vim-commentary'
@@ -81,7 +80,6 @@ call plug#begin ('~/.vim/plugged')
   Plug 'alvan/vim-closetag'
   Plug 'tpope/vim-repeat'
   Plug 'jparise/vim-graphql'
-  Plug 'scrooloose/syntastic'
   Plug 'sheerun/vim-polyglot'
   Plug 'valloric/youcompleteme'
   Plug 'tpope/vim-dispatch'
@@ -108,6 +106,10 @@ let NERDTreeShowLineNumbers = 1
 autocmd FileType nerdtree setlocal relativenumber
 let g:NERDTreeMapJumpNextSibling = '<Nop>'
 let g:NERDTreeMapJumpPrevSibling = '<Nop>'
+let NERDTreeQuitOnOpen = 1
+let NERDTreeAutoDeleteBuffer = 1
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
 
 " lightline settings
 let g:lightline = {
@@ -179,6 +181,14 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
 
+" linting
+let g:ale_linters = {
+      \   'python': ['flake8', 'pylint'],
+      \   'javascript': ['eslint'],
+      \}
+
+let g:ale_python_pylint_options = '--load-plugins pylint_django'
+
 " lint fixing
 let g:ale_fixers = {
 \   "javascript": ["eslint"],
@@ -187,6 +197,7 @@ let g:ale_fixers = {
 \   "typescript": ["eslint", "prettier"],
 \   "typescriptreact": ["eslint", "prettier"],
 \   "go": ["gofmt"],
+\   "python": ["remove_trailing_lines", "isort", "ale#fixers#generic_python#BreakUpLongLines", "yapf"],
 \   "java": ["google_java_format"],
 \   "css": ["prettier"],
 \   "markdown": ["prettier"],
@@ -202,7 +213,10 @@ let g:ale_sign_error = '❌'
 let g:ale_sign_warning = '⚠️'
 
 " disable polyglot on typescript temporarily
-let g:polyglot_disabled = ["typescript", "typescriptreact"]
+" let g:polyglot_disabled = ["typescript", "typescriptreact"]
+
+" vim jsx pretty
+let g:vim_jsx_pretty_colorful_config = 1
 
 " vim test strategy
 let test#strategy = "dispatch"
