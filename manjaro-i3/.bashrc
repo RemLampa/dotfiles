@@ -4,11 +4,6 @@
 
 [[ $- != *i* ]] && return
 
-# Connect to SSH agent
-# eval "$(ssh-agent -s)"
-/usr/bin/keychain $HOME/.ssh/id_rsa
-source $HOME/.keychain/$HOSTNAME-sh
-
 colors() {
 	local fgc bgc vals seq0
 
@@ -167,6 +162,13 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+# Custom bash functions
+
+if [ -f ~/.bash_functions ]; then
+    . ~/.bash_functions
+fi
+
+
 # Git branch in prompt
 parse_git_branch(){
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
@@ -190,3 +192,10 @@ fi
 [[ -s "/home/remlampa/.gvm/scripts/gvm" ]] && source "/home/remlampa/.gvm/scripts/gvm"
 
 export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+# BEGIN SNIPPET: Platform.sh CLI configuration
+HOME=${HOME:-'/home/remlampa'}
+export PATH="$HOME/"'.platformsh/bin':"$PATH"
+if [ -f "$HOME/"'.platformsh/shell-config.rc' ]; then . "$HOME/"'.platformsh/shell-config.rc'; fi # END SNIPPET
