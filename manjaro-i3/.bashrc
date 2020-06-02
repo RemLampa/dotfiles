@@ -195,6 +195,10 @@ export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PR
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
+export PATH="$HOME/snap/androidsdk/24/AndroidSDK:$PATH"
+export ANDROID_SDK_ROOT="$HOME/snap/androidsdk/current/AndroidSDK"
+export ANDROID_HOME=$ANDROID_SDK_ROOT
+
 # BEGIN SNIPPET: Platform.sh CLI configuration
 HOME=${HOME:-'/home/remlampa'}
 export PATH="$HOME/"'.platformsh/bin':"$PATH"

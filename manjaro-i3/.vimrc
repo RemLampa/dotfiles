@@ -12,7 +12,6 @@ set wildmenu
 set showmatch
 set incsearch
 set hlsearch
-set clipboard=unnamed
 set expandtab
 set shiftwidth=2
 set softtabstop=2
@@ -25,6 +24,7 @@ set encoding=UTF-8
 set splitbelow
 set splitright
 set laststatus=2
+hi Normal guibg=NONE ctermbg=NONE
 
 set backup
 set backupcopy=yes
@@ -33,9 +33,6 @@ set backupskip=/tmp/*,/private/tmp/*
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set writebackup
 
-filetype on
-filetype indent on
-filetype plugin on
 filetype plugin indent on
 
 " cursor shape
@@ -67,7 +64,7 @@ call plug#begin ('~/.vim/plugged')
   Plug 'easymotion/vim-easymotion'
   Plug 'tpope/vim-sleuth'
   Plug 'Xuyuanp/nerdtree-git-plugin'
-  Plug 'w0rp/ale'
+  Plug 'dense-analysis/ale'
   Plug 'kristijanhusak/vim-carbon-now-sh'
   Plug 'tpope/vim-surround'
   Plug 'altercation/vim-colors-solarized'
@@ -75,6 +72,8 @@ call plug#begin ('~/.vim/plugged')
   Plug 'itchyny/lightline.vim'
   Plug 'mengelbrecht/lightline-bufferline'
   Plug 'airblade/vim-gitgutter'
+  Plug 'quramy/tsuquyomi'
+  Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
   Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
   Plug 'tpope/vim-commentary'
   Plug 'jiangmiao/auto-pairs'
@@ -84,8 +83,9 @@ call plug#begin ('~/.vim/plugged')
   Plug 'sheerun/vim-polyglot'
   Plug 'valloric/youcompleteme'
   Plug 'tpope/vim-dispatch'
+  Plug 'tpope/vim-unimpaired'
   Plug 'janko-m/vim-test'
-  Plug 'quramy/tsuquyomi'
+  Plug 'mileszs/ack.vim'
   " Tabular before vim-markdown
   Plug 'godlygeek/tabular'
   Plug 'nathanaelkane/vim-indent-guides'
@@ -105,6 +105,12 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " nerdtree settings
 let NERDTreeShowLineNumbers = 1
 autocmd FileType nerdtree setlocal relativenumber
+let g:NERDTreeMapJumpNextSibling = '<Nop>'
+let g:NERDTreeMapJumpPrevSibling = '<Nop>'
+let NERDTreeQuitOnOpen = 1
+let NERDTreeAutoDeleteBuffer = 1
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
 
 " lightline settings
 let g:lightline = {
@@ -176,34 +182,44 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
 
+" linting
+let g:ale_linters = {
+      \   'python': ['flake8', 'pylint'],
+      \   'javascript': ['eslint'],
+      \}
+
+let g:ale_python_pylint_options = '--load-plugins pylint_django'
+
 " lint fixing
 let g:ale_fixers = {
-\   "*": ["remove_trailing_lines", "trim_whitespace"],
 \   "javascript": ["eslint"],
-\   "json": ["prettier"],
-\   "graphql": ["eslint"],
+\   "json": ["eslint", "prettier"],
+\   "graphql": ["eslint", "prettier"],
+\   "typescript": ["eslint", "prettier"],
+\   "typescriptreact": ["eslint", "prettier"],
 \   "go": ["gofmt"],
+\   "python": ["remove_trailing_lines", "isort", "ale#fixers#generic_python#BreakUpLongLines", "yapf"],
+\   "java": ["google_java_format"],
 \   "css": ["prettier"],
 \   "markdown": ["prettier"],
+\   "yaml": ["prettier"],
+\   "*": ["remove_trailing_lines", "trim_whitespace"]
 \}
-" \   "typescript": ["eslint"],
-" let g:ale_javascript_eslint_executable = "eslint_d"
-" let g:ale_javascript_eslint_use_global = 1
-" let g:ale_javascript_prettier_eslint_executable = "prettier_eslint"
-" let g:ale_javascript_prettier_eslint_use_global = 1
+
+let g:ale_javascript_eslint_suppress_eslintignore = 1
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_save = 1
 let g:ale_lint_on_text_changed = 0
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = '⚠️'
+highlight ALEErrorSign ctermbg=NONE ctermfg=red
+highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
 
 " vim test strategy
 let test#strategy = "dispatch"
 
 " enable indentguides
 let g:indent_guides_enable_on_vim_startup = 1
-
-" tsuquyomi settings
-let g:tsuquyomi_disable_quickfix = 1
-let g:tsuquyomi_use_local_typescript = 0
 
 " vim-go settings
 " let g:go_fmt_command = "goimports"
@@ -250,6 +266,8 @@ nmap <silent> t<C-f> :TestFile<CR>    " t Ctrl+f
 nmap <silent> t<C-s> :TestSuite<CR>   " t Ctrl+s
 nmap <silent> t<C-l> :TestLast<CR>    " t Ctrl+l
 nmap <silent> t<C-g> :TestVisit<CR>   " t Ctrl+g
+
+nnoremap <F9> <Esc>:syntax sync fromstart<CR>
 
 " Troubleshoot DevIcons
 if exists("g:loaded_webdevicons")
