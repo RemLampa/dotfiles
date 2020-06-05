@@ -2,6 +2,8 @@ alias pyserve="python -m SimpleHTTPServer 8000 --silent || python -m http.server
 
 alias tmux='tmux -2'
 alias ta="tmux attach -t"
+alias fd=fdfind
+alias ssh-on='eval ssh-agent -s'
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -51,8 +53,9 @@ alias gl="git log --oneline --graph --color --decorate | emojify | less -r"
 # source $HOME/.keychain/$HOSTNAME-sh
 alias keychain="/usr/bin/keychain $HOME/.ssh/id_rsa && source $HOME/.keychain/$HOSTNAME-sh"
 
-# NO-STACK LOCAL CLI
-alias ns="node ~/Documents/projects/matchlynx/nostack-cli/bin/run"
+# colorls
+alias cls='colorls'
+alias lc='colorls -lA --sd'
 
 # alias git=hub
 # alias gitlog="hub log --oneline --color --decorate | emojify"

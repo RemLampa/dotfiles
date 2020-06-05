@@ -89,9 +89,8 @@ set -o vi
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # fd as default source for fzf
-export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -113,18 +112,20 @@ if ! shopt -oq posix; then
   fi
 fi
 
-
 export PATH="~/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
+# pipx
+export PATH="/home/remlampa/.local/bin:$PATH"
+eval "$(register-python-argcomplete pipx)"
+
+venv () {
+  source ~/.venv/"$1"/bin/activate
+}
+
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-[[ -s "/home/remlampa/.gvm/scripts/gvm" ]] && source "/home/remlampa/.gvm/scripts/gvm"
-
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
@@ -134,3 +135,8 @@ export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PR
 HOME=${HOME:-'/home/remlampa'}
 export PATH="$HOME/"'.platformsh/bin':"$PATH"
 if [ -f "$HOME/"'.platformsh/shell-config.rc' ]; then . "$HOME/"'.platformsh/shell-config.rc'; fi # END SNIPPET
+
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
+source $(dirname $(gem which colorls))/tab_complete.sh

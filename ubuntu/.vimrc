@@ -12,7 +12,7 @@ set wildmenu
 set showmatch
 set incsearch
 set hlsearch
-set clipboard=unnamed
+set clipboard=unnamedplus
 set expandtab
 set shiftwidth=2
 set softtabstop=2
@@ -25,6 +25,7 @@ set encoding=UTF-8
 set splitbelow
 set splitright
 set laststatus=2
+hi Normal guibg=NONE ctermbg=NONE
 
 set backup
 set backupcopy=yes
@@ -242,9 +243,6 @@ autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 " move vertically by visual line
 nnoremap j gj
 nnoremap k gk
-
-" copy and paste from desktop clipboard
-set clipboard=unnamedplus
 
 let mapleader=" "
 nnoremap <Leader>E :NERDTreeToggle<CR>
