@@ -84,6 +84,8 @@ call plug#begin ('~/.vim/plugged')
   Plug 'jparise/vim-graphql'
   Plug 'sheerun/vim-polyglot'
   Plug 'valloric/youcompleteme'
+  Plug 'SirVer/ultisnips'
+  Plug 'honza/vim-snippets'
   Plug 'tpope/vim-dispatch'
   Plug 'tpope/vim-unimpaired'
   Plug 'janko-m/vim-test'
