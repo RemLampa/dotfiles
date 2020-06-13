@@ -5,6 +5,7 @@ set background=dark
 " colorscheme darcula
 colorscheme gruvbox
 " colorscheme default
+set title
 set showcmd
 set cursorline
 set lazyredraw

@@ -68,7 +68,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
+# ZSH_CUSTOM=~/.zsh/custom-plugins
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -81,6 +81,7 @@ plugins=(
   zsh-autosuggestions
   bgnotify
   zsh-pyenv
+  yarn-autocompletions
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -122,6 +123,8 @@ venv () {
   source ~/.venv/"$1"/bin/activate
 }
 
+# pipx
+export PATH="/home/remlampa/.local/bin:$PATH"
 eval "$(register-python-argcomplete pipx)"
 
 if [ -f ~/.bash_aliases ]; then
@@ -140,3 +143,4 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
 source $(dirname $(gem which colorls))/tab_complete.sh
+eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)

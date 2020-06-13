@@ -140,3 +140,4 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
 source $(dirname $(gem which colorls))/tab_complete.sh
+eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
