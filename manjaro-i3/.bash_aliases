@@ -2,6 +2,7 @@ alias pyserve="python -m SimpleHTTPServer 8000 --silent || python -m http.server
 
 alias tmux="tmux -2"
 alias ta="tmux attach -t"
+alias ssh-on='eval ssh-agent -s'
 
 alias gitlog="git log --oneline --color --decorate | emojify"
 alias gs="git status"
@@ -21,7 +22,9 @@ alias gl="git log --oneline --graph --color --decorate | emojify | less -r"
 
 alias keychain="/usr/bin/keychain $HOME/.ssh/id_rsa && source $HOME/.keychain/$HOSTNAME-sh"
 
-alias ns="~/Projects/matchlynx/ns-cli/bin/run"
+# colorls
+alias cls='colorls'
+alias lc='colorls -lA --sd'
 
 # alias git=hub
 # alias gitlog="hub log --oneline --color --decorate | emojify"

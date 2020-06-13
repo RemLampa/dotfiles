@@ -5,6 +5,7 @@ set background=dark
 " colorscheme darcula
 colorscheme gruvbox
 " colorscheme default
+set title
 set showcmd
 set cursorline
 set lazyredraw
@@ -59,7 +60,7 @@ call plug#begin ('~/.vim/plugged')
   Plug 'scrooloose/nerdtree'
   Plug 'wincent/terminus'
   Plug 'christoomey/vim-tmux-navigator'
-  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'junegunn/fzf.vim'
   Plug 'easymotion/vim-easymotion'
   Plug 'tpope/vim-sleuth'
@@ -182,6 +183,8 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
 
+let g:fzf_preview_window = 'right:60%'
+
 " linting
 let g:ale_linters = {
       \   'python': ['flake8', 'pylint'],
@@ -243,7 +246,7 @@ nnoremap k gk
 " copy and paste from desktop clipboard
 set clipboard=unnamedplus
 
-let mapleader=" "
+let mapleader=","
 nnoremap <Leader>E :NERDTreeToggle<CR>
 nnoremap th  :tabfirst<CR>
 nnoremap tj  :tabnext<CR>
@@ -254,11 +257,21 @@ nnoremap tt  :tabedit<Space>
 nnoremap tn  :tabnext<Space>
 nnoremap tm  :tabm<Space>
 nnoremap td  :tabclose<CR>
-nnoremap <c-p> :FZF<CR>
+nnoremap <c-p> :GFiles<CR>
+nnoremap gf :Files<CR>
+nnoremap gs :GFiles?<CR>
+nnoremap gb :Buffers<CR>
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
+
+nnoremap gd :YcmCompleter GoToDefinition
+nnoremap gl :YcmCompleter GoToDeclaration
+
+" find and replace
+nnoremap <Leader>r :%s///g<Left><Left>
+nnoremap <Leader>rc :%s///gc<Left><Left><Left>
 
 " keybindings for running tests
 nmap <silent> t<C-n> :TestNearest<CR> " t Ctrl+n
