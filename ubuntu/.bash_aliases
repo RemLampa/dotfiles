@@ -3,7 +3,7 @@ alias pyserve="python -m SimpleHTTPServer 8000 --silent || python -m http.server
 alias tmux='tmux -2'
 alias ta="tmux attach -t"
 alias fd=fdfind
-alias ssh-on='eval ssh-agent -s'
+alias ssh-on='eval `ssh-agent -s`'
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -45,7 +45,7 @@ alias gb="git branch"
 alias gco="git checkout"
 alias gd="git diff"
 alias grst="git reset"
-alias gl="git log --oneline --graph --color --decorate | emojify | less -r"
+alias gl="git log --oneline --graph --color --decorate | less -r"
 
 # Connect to SSH agent
 # eval "$(ssh-agent -s)"

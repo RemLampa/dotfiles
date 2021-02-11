@@ -50,6 +50,13 @@ augroup numbertoggle
   autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 augroup END
 
+" remove line numbers on inactive windows
+" augroup BgHighlight
+"   autocmd!
+"   autocmd WinEnter * set number
+"   autocmd WinLeave * set nonumber
+" augroup END
+
 " vim-plug
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -65,6 +72,7 @@ call plug#begin ('~/.vim/plugged')
   Plug 'junegunn/fzf.vim'
   Plug 'easymotion/vim-easymotion'
   Plug 'tpope/vim-sleuth'
+  Plug 'ap/vim-css-color'
   Plug 'Xuyuanp/nerdtree-git-plugin'
   Plug 'dense-analysis/ale'
   Plug 'kristijanhusak/vim-carbon-now-sh'
@@ -75,20 +83,18 @@ call plug#begin ('~/.vim/plugged')
   Plug 'mengelbrecht/lightline-bufferline'
   Plug 'airblade/vim-gitgutter'
   Plug 'quramy/tsuquyomi'
-  Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-  Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
   Plug 'tpope/vim-commentary'
   Plug 'jiangmiao/auto-pairs'
   Plug 'alvan/vim-closetag'
   Plug 'tpope/vim-repeat'
-  Plug 'jparise/vim-graphql'
   Plug 'sheerun/vim-polyglot'
+  " Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+  Plug 'ervandew/supertab'
   Plug 'valloric/youcompleteme'
-  Plug 'SirVer/ultisnips'
   Plug 'honza/vim-snippets'
+  Plug 'SirVer/ultisnips'
   Plug 'tpope/vim-dispatch'
   Plug 'tpope/vim-unimpaired'
-  Plug 'janko-m/vim-test'
   " Tabular before vim-markdown
   Plug 'godlygeek/tabular'
   Plug 'nathanaelkane/vim-indent-guides'
@@ -161,14 +167,18 @@ vnoremap <F5> :CarbonNowSh<CR>
 
 " YCM settings
 " Start autocompletion after 4 chars
-let g:ycm_min_num_of_chars_for_completion = 4
-let g:ycm_min_num_identifier_candidate_chars = 4
+" let g:ycm_min_num_of_chars_for_completion = 4
+" let g:ycm_min_num_identifier_candidate_chars = 4
 let g:ycm_enable_diagnostic_highlighting = 0
+
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
 
 " Don't show YCM's preview window
 set completeopt-=preview
 let g:ycm_add_preview_to_completeopt = 0
-
 
 " fzf settings
 let g:fzf_colors =
@@ -222,6 +232,15 @@ let g:ale_sign_warning = '⚠️'
 " disable polyglot on typescript temporarily
 " let g:polyglot_disabled = ["typescript", "typescriptreact"]
 
+" Svelte settings
+let g:svelte_preprocessors = ['typescript', 'scss']
+
+" Untisnips
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger="<c-x>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+
 " vim jsx pretty
 let g:vim_jsx_pretty_colorful_config = 1
 
@@ -244,13 +263,16 @@ let g:go_metalinter_autosave = 1
 let g:go_metalinter_autosave_enabled = ["vet", "golint"]
 autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 
+" vim-markdown settings
+let g:vim_markdown_folding_disabled = 1
+
 " CUSTOM KEY MAPPINGS
 
 " move vertically by visual line
 nnoremap j gj
 nnoremap k gk
 
-let mapleader=","
+let mapleader=" "
 nnoremap <Leader>E :NERDTreeToggle<CR>
 nnoremap th  :tabfirst<CR>
 nnoremap tj  :tabnext<CR>
@@ -261,8 +283,8 @@ nnoremap tt  :tabedit<Space>
 nnoremap tn  :tabnext<Space>
 nnoremap tm  :tabm<Space>
 nnoremap td  :tabclose<CR>
-nnoremap <c-p> :GFiles<CR>
-nnoremap gf :Files<CR>
+nnoremap <c-p> :Files<CR>
+nnoremap gf :GFiles<CR>
 nnoremap gs :GFiles?<CR>
 nnoremap gb :Buffers<CR>
 nnoremap <c-j> <c-w>j
@@ -270,8 +292,8 @@ nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
 
-nnoremap gd :YcmCompleter GoToDefinition
-nnoremap gl :YcmCompleter GoToDeclaration
+nnoremap gd :YcmCompleter GoToDefinition<CR>
+nnoremap gl :YcmCompleter GoToDeclaration<CR>
 
 " find and replace
 nnoremap <Leader>r :%s///g<Left><Left>
