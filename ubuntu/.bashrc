@@ -121,7 +121,7 @@ export PATH="/home/remlampa/.local/bin:$PATH"
 eval "$(register-python-argcomplete pipx)"
 
 venv () {
-  source ~/.venv/"$1"/bin/activate
+# source ~/.venv/"$1"/bin/activate  # commented out by conda initialize
 }
 
 
@@ -130,6 +130,8 @@ venv () {
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
+
+export PATH="$HOME/.poetry/bin:$PATH"
 
 # BEGIN SNIPPET: Platform.sh CLI configuration
 HOME=${HOME:-'/home/remlampa'}
@@ -141,3 +143,19 @@ eval "$(rbenv init -)"
 
 source $(dirname $(gem which colorls))/tab_complete.sh
 eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/remlampa/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/remlampa/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/remlampa/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/remlampa/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+

@@ -82,7 +82,11 @@ plugins=(
   bgnotify
   zsh-pyenv
   yarn-autocompletions
+  # ssh-agent
 )
+
+# zstyle :omz:plugins:ssh-agent agent-forwarding on
+# zstyle :omz:plugins:ssh-agent identities id_rsa id_rsa_prosple
 
 source $ZSH/oh-my-zsh.sh
 
@@ -120,7 +124,7 @@ export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!.git'"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 venv () {
-  source ~/.venv/"$1"/bin/activate
+# source ~/.venv/"$1"/bin/activate  # commented out by conda initialize  # commented out by conda initialize
 }
 
 # pipx
@@ -135,6 +139,7 @@ fi
 
 export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
 
+export XAUTHORITY=/home/remlampa/.Xauthority
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -144,3 +149,31 @@ eval "$(rbenv init -)"
 
 source $(dirname $(gem which colorls))/tab_complete.sh
 eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+
+# BEGIN SNIPPET: Platform.sh CLI configuration
+HOME=${HOME:-'/home/remlampa'}
+export PATH="$HOME/"'.platformsh/bin':"$PATH"
+if [ -f "$HOME/"'.platformsh/shell-config.rc' ]; then . "$HOME/"'.platformsh/shell-config.rc'; fi # END SNIPPET
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+export PATH="$PATH:$HOME/anaconda3/bin"
+alias pyconda="$HOME/anaconda3/bin/python"
+
+export PATH="$HOME/.poetry/bin:$PATH"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+# __conda_setup="$('/home/remlampa/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+# if [ $? -eq 0 ]; then
+#     eval "$__conda_setup"
+# else
+#     if [ -f "/home/remlampa/anaconda3/etc/profile.d/conda.sh" ]; then
+#         . "/home/remlampa/anaconda3/etc/profile.d/conda.sh"
+#     else
+#         export PATH="/home/remlampa/anaconda3/bin:$PATH"
+#     fi
+# fi
+# unset __conda_setup
+# <<< conda initialize <<<
+

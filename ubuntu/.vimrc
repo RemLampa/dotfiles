@@ -11,8 +11,6 @@ set cursorline
 set lazyredraw
 set wildmenu
 set showmatch
-set incsearch
-set hlsearch
 set clipboard=unnamedplus
 set expandtab
 set shiftwidth=2
@@ -27,15 +25,47 @@ set splitbelow
 set splitright
 set laststatus=2
 hi Normal guibg=NONE ctermbg=NONE
+set colorcolumn=80
 
-set backup
-set backupcopy=yes
-set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set backupskip=/tmp/*,/private/tmp/*
-set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set writebackup
+" Make search case insensitive
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
 
+" Use new regular expression engine
+" set re=0
+
+" -- TABS ---
 filetype plugin indent on
+au BufNewFile, BufRead *.ts, *.tsx, *.js, *.jsx, *.json, *.md, *.html, *.css, *.graphql, *.gql
+    \ set tabstop=2 |
+    \ set softtabstop=2 |
+    \ set shiftwidth=2
+au BufNewFile, BufRead *.py
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix
+autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
+highlight BadWhitespace ctermbg=red guibg=darkred
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+
+"-- FOLDING --
+set foldmethod=syntax "syntax highlighting items specify folds
+set foldcolumn=1 "defines 1 col at window left, to indicate folding
+let javaScript_fold=1 "activate folding by JS syntax
+set foldlevelstart=99 "start file with all folds opened
+
+" -- BACKUPS --
+" Disable backup and swap files - they trigger too many events
+" for file system watchers
+set nobackup
+set nowritebackup
+set noswapfile
 
 " cursor shape
 let &t_SI = "\<Esc>[6 q"
@@ -50,12 +80,8 @@ augroup numbertoggle
   autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 augroup END
 
-" remove line numbers on inactive windows
-" augroup BgHighlight
-"   autocmd!
-"   autocmd WinEnter * set number
-"   autocmd WinLeave * set nonumber
-" augroup END
+autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 
 " vim-plug
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -74,7 +100,6 @@ call plug#begin ('~/.vim/plugged')
   Plug 'tpope/vim-sleuth'
   Plug 'ap/vim-css-color'
   Plug 'Xuyuanp/nerdtree-git-plugin'
-  Plug 'dense-analysis/ale'
   Plug 'kristijanhusak/vim-carbon-now-sh'
   Plug 'tpope/vim-surround'
   Plug 'altercation/vim-colors-solarized'
@@ -82,17 +107,33 @@ call plug#begin ('~/.vim/plugged')
   Plug 'itchyny/lightline.vim'
   Plug 'mengelbrecht/lightline-bufferline'
   Plug 'airblade/vim-gitgutter'
-  Plug 'quramy/tsuquyomi'
   Plug 'tpope/vim-commentary'
+  Plug 'fatih/vim-go'
+  Plug 'Konfekt/FastFold'
+  " DEV STATS
+  Plug 'wakatime/vim-wakatime'
+  " START JS/TS
+  Plug 'pangloss/vim-javascript'
+  Plug 'maxmellon/vim-jsx-pretty'
+  Plug 'leafgarland/typescript-vim'
+  Plug 'peitalin/vim-jsx-typescript'
+  Plug 'jparise/vim-graphql'
+  " END JS/TS
+  " START PYTHON
+  Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
+  Plug 'tmhedberg/SimpylFold'
+  Plug 'petobens/poet-v'
+  " Plug 'jmcantrell/vim-virtualenv'
+  " END PYTHON
+  " START ELIXIR
+  Plug 'elixir-editors/vim-elixir'
+  Plug 'mhinz/vim-mix-format'
+  " END ELIXIR
   Plug 'jiangmiao/auto-pairs'
   Plug 'alvan/vim-closetag'
   Plug 'tpope/vim-repeat'
-  Plug 'sheerun/vim-polyglot'
-  " Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-  Plug 'ervandew/supertab'
-  Plug 'valloric/youcompleteme'
-  Plug 'honza/vim-snippets'
-  Plug 'SirVer/ultisnips'
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'styled-components/vim-styled-components', { 'branch': 'develop' }
   Plug 'tpope/vim-dispatch'
   Plug 'tpope/vim-unimpaired'
   " Tabular before vim-markdown
@@ -120,6 +161,7 @@ let NERDTreeQuitOnOpen = 1
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
+let g:NERDTreeWinSize=60
 
 " lightline settings
 let g:lightline = {
@@ -165,20 +207,54 @@ let g:closetag_emptyTags_caseSensitive = 1
 " carbon screenshot settings
 vnoremap <F5> :CarbonNowSh<CR>
 
-" YCM settings
-" Start autocompletion after 4 chars
-" let g:ycm_min_num_of_chars_for_completion = 4
-" let g:ycm_min_num_identifier_candidate_chars = 4
-let g:ycm_enable_diagnostic_highlighting = 0
+" COC settings
+let g:coc_global_extensions = [
+  \ 'coc-tsserver'
+  \ ]
 
-" make YCM compatible with UltiSnips (using supertab)
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
+if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
+  let g:coc_global_extensions += ['coc-prettier']
+endif
 
-" Don't show YCM's preview window
-set completeopt-=preview
-let g:ycm_add_preview_to_completeopt = 0
+if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
+  let g:coc_global_extensions += ['coc-eslint']
+endif
+
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=300
+
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " fzf settings
 let g:fzf_colors =
@@ -198,57 +274,26 @@ let g:fzf_colors =
 
 let g:fzf_preview_window = 'right:60%'
 
-" linting
-let g:ale_linters = {
-      \   'python': ['flake8', 'pylint'],
-      \   'javascript': ['eslint'],
-      \}
-
-let g:ale_python_pylint_options = '--load-plugins pylint_django'
-
-" lint fixing
-let g:ale_fixers = {
-\   "javascript": ["eslint"],
-\   "json": ["eslint", "prettier"],
-\   "graphql": ["eslint", "prettier"],
-\   "typescript": ["eslint", "prettier"],
-\   "typescriptreact": ["eslint", "prettier"],
-\   "go": ["gofmt"],
-\   "python": ["remove_trailing_lines", "isort", "ale#fixers#generic_python#BreakUpLongLines", "yapf"],
-\   "java": ["google_java_format"],
-\   "css": ["prettier"],
-\   "markdown": ["prettier"],
-\   "yaml": ["prettier"],
-\   "*": ["remove_trailing_lines", "trim_whitespace"]
-\}
-
-let g:ale_javascript_eslint_suppress_eslintignore = 1
-let g:ale_lint_on_save = 1
-let g:ale_fix_on_save = 1
-let g:ale_lint_on_text_changed = 0
-let g:ale_sign_error = '❌'
-let g:ale_sign_warning = '⚠️'
-
-" disable polyglot on typescript temporarily
-" let g:polyglot_disabled = ["typescript", "typescriptreact"]
-
-" Svelte settings
-let g:svelte_preprocessors = ['typescript', 'scss']
-
-" Untisnips
-" better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger="<c-x>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-
 " vim jsx pretty
 let g:vim_jsx_pretty_colorful_config = 1
 
-" vim test strategy
-let test#strategy = "dispatch"
-
 " enable indentguides
 let g:indent_guides_enable_on_vim_startup = 1
+
+" Settings for python-mode
+let g:pymode_syntax = 1
+let g:pymode_syntax_builtin_objs = 0
+let g:pymode_syntax_builtin_funcs = 0
+let g:pymode_python = 'python3'
+
+" virtualenv
+let g:virtualenv_directory = "~/.venv"
+let g:virtualenv_auto_activate = 1
+
+" poet-v
+let g:poetv_executables = ['poetry']
+let g:poetv_auto_activate = 1
+let g:poetv_set_environment = 1
 
 " vim-go settings
 " let g:go_fmt_command = "goimports"
@@ -261,10 +306,20 @@ let g:go_highlight_extra_types = 1
 let g:go_metalinter_enabled = ["vet", "golint", "errcheck"]
 let g:go_metalinter_autosave = 1
 let g:go_metalinter_autosave_enabled = ["vet", "golint"]
-autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
+
+" pymode settings
+let g:pymode = 1 
+let g:pymode_indent = 1
+let g:pymode_virtualenv = 1
+let g:pymode_lint = 1
+let g:pymode_lint_on_write = 1
+let g:pymode_lint_message = 1
 
 " vim-markdown settings
 let g:vim_markdown_folding_disabled = 1
+
+" vim-mix-format settings
+let g:mix_format_on_save = 1
 
 " CUSTOM KEY MAPPINGS
 
@@ -292,8 +347,45 @@ nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
 
-nnoremap gd :YcmCompleter GoToDefinition<CR>
-nnoremap gl :YcmCompleter GoToDeclaration<CR>
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+nnoremap <silent> <space>d :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <space>s :<C-u>CocList -I symbols<cr>
+nmap <leader>do <Plug>(coc-codeaction)
+nmap <leader>rn <Plug>(coc-rename)
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+" Mappings for CoCList
+" Show all diagnostics.
+nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
 " find and replace
 nnoremap <Leader>r :%s///g<Left><Left>
