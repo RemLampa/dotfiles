@@ -1,0 +1,32 @@
+{
+  "eslint.autoFixOnSave": true,
+  "eslint.fileTypes": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "prettier.disableSuccessMessage": true,
+  "coc.preferences.formatOnSaveFiletypes": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "json",
+    "markdown",
+    "html",
+    "css"
+  ],
+  "tsserver.formatOnType": true,
+  "coc.preferences.formatOnType": true,
+  "diagnostic.errorSign": "✘",
+  "diagnostic.warningSign": "",
+  "diagnostic.infoSign": "",
+  "python.pythonPath": "/home/remlampa/.pyenv/shims/python",
+  "python.linting.enabled": true,
+  "python.linting.mypyEnabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.linting.pylintEnabled": true,
+  "python.linting.pylintArgs": ["--load-plugins"],
+  "json.format.enable": true
+}
