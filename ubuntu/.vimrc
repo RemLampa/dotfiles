@@ -36,6 +36,7 @@ set smartcase
 " Built-in autocompletion
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 autocmd FileType scss set omnifunc=csscomplete#CompleteCSS
+autocmd FileType scss setl iskeyword+=@-@
 autocmd FileType sass set omnifunc=csscomplete#CompleteCSS
 
 " Use new regular expression engine
@@ -214,8 +215,24 @@ vnoremap <F5> :CarbonNowSh<CR>
 
 " COC settings
 let g:coc_global_extensions = [
-  \ 'coc-tsserver'
-  \ ]
+      \'coc-css',
+      \'coc-cssmodules',
+      \'coc-emmet',
+      \'coc-git',
+      \'coc-go',
+      \'coc-graphql',
+      \'coc-highlight',
+      \'coc-html',
+      \'coc-jedi', 
+      \'coc-json', 
+      \'coc-markdownlint', 
+      \'coc-pairs', 
+      \'coc-pyright', 
+      \'coc-python', 
+      \'coc-styled-components', 
+      \'coc-tsserver', 
+      \]
+
 
 if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
   let g:coc_global_extensions += ['coc-prettier']
@@ -264,24 +281,6 @@ endif
 
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
-
-let g:coc_global_extensions = [
-      \'coc-css',
-      \'coc-cssmodules',
-      \'coc-elixir',
-      \'coc-eslint',
-      \'coc-go',
-      \'coc-graphql',
-      \'coc-jedi', 
-      \'coc-json', 
-      \'coc-markdownlint', 
-      \'coc-prettier', 
-      \'coc-pyright', 
-      \'coc-python', 
-      \'coc-styled-components', 
-      \'coc-tsserver', 
-      \'coc-git'
-      \]
 
 " fzf settings
 let g:fzf_colors =
