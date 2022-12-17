@@ -124,6 +124,7 @@ call plug#begin ('~/.vim/plugged')
   Plug 'leafgarland/typescript-vim'
   Plug 'peitalin/vim-jsx-typescript'
   Plug 'jparise/vim-graphql'
+  Plug 'jxnblk/vim-mdx-js'
   " END JS/TS
   " START PYTHON
   Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
@@ -132,12 +133,13 @@ call plug#begin ('~/.vim/plugged')
   " Plug 'jmcantrell/vim-virtualenv'
   " END PYTHON
   " START ELIXIR
-  Plug 'elixir-editors/vim-elixir'
-  Plug 'mhinz/vim-mix-format'
+  " Plug 'elixir-editors/vim-elixir'
+  " Plug 'mhinz/vim-mix-format'
   " END ELIXIR
   Plug 'jiangmiao/auto-pairs'
   Plug 'alvan/vim-closetag'
   Plug 'tpope/vim-repeat'
+  Plug 'github/copilot.vim'
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'styled-components/vim-styled-components', { 'branch': 'develop' }
   Plug 'tpope/vim-dispatch'
